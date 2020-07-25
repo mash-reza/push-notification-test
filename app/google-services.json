@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "869821151436",
+    "firebase_url": "https://push-notification-test-d93a8.firebaseio.com",
+    "project_id": "push-notification-test-d93a8",
+    "storage_bucket": "push-notification-test-d93a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869821151436:android:e545529729d32e61082a69",
+        "android_client_info": {
+          "package_name": "com.festive.pushnotificationtest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "869821151436-plf6l6029n0lseht12rafo8qvefe0dj2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBu6JVrKC4kvyTW7Q6Q3bKl5BbU4cnPFJA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "869821151436-plf6l6029n0lseht12rafo8qvefe0dj2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
