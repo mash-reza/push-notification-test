@@ -26,17 +26,27 @@
                 motion:dragDirection="dragRight" />
 
         <KeyFrameSet>
-            <KeyAttribute
-                    android:rotation="-30"
-                    android:scaleX="2"
-                    android:scaleY="2"
-                    motion:framePosition="30"
-                    motion:motionTarget="@id/button" />
-            <KeyPosition
-                    motion:framePosition="50"
-                    motion:keyPositionType="pathRelative"
+            <KeyCycle
+                    android:translationY="50dp"
+                    motion:framePosition="100"
                     motion:motionTarget="@id/button"
-                    motion:percentY="-0.3" />
+                    motion:waveOffset="0"
+                    motion:wavePeriod="0"
+                    motion:waveShape="sin" />
+            <KeyCycle
+                    android:translationY="50dp"
+                    motion:framePosition="20"
+                    motion:motionTarget="@id/button"
+                    motion:waveOffset="0"
+                    motion:wavePeriod="1"
+                    motion:waveShape="sin" />
+            <KeyCycle
+                    android:translationY="50dp"
+                    motion:framePosition="0"
+                    motion:motionTarget="@id/button"
+                    motion:waveOffset="0"
+                    motion:wavePeriod="0"
+                    motion:waveShape="sin" />
         </KeyFrameSet>
     </Transition>
 
