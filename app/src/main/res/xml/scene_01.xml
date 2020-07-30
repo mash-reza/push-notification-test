@@ -26,11 +26,17 @@
                 motion:dragDirection="dragRight" />
 
         <KeyFrameSet>
-            <KeyPosition
-                    motion:keyPositionType="pathRelative"
-                    motion:percentY="-.5"
+            <KeyAttribute
+                    android:rotation="-30"
+                    android:scaleX="2"
+                    android:scaleY="2"
                     motion:framePosition="30"
-                    motion:motionTarget="@id/button"/>
+                    motion:motionTarget="@id/button" />
+            <KeyPosition
+                    motion:framePosition="50"
+                    motion:keyPositionType="pathRelative"
+                    motion:motionTarget="@id/button"
+                    motion:percentY="-0.3" />
         </KeyFrameSet>
     </Transition>
 
