@@ -8,8 +8,8 @@
         tools:context=".MainActivity"
         app:layoutDescription="@xml/scene_01">
 
-    <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:id="@+id/image"
+    <View
+            android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:src="@drawable/image"
