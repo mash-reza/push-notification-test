@@ -15,7 +15,7 @@
 
     <Transition
             motion:constraintSetEnd="@+id/end"
-            motion:constraintSetStart="@+id/start"
+            motion:constraintSetStart="@+id/button"
             motion:duration="1000"
             motion:motionInterpolator="linear">
         <OnSwipe
@@ -42,7 +42,7 @@
                 motion:layout_constraintStart_toStartOf="parent" />
     </ConstraintSet>
 
-    <ConstraintSet android:id="@+id/start">
+    <ConstraintSet android:id="@+id/button">
         <Constraint
                 android:id="@+id/background"
                 android:layout_width="match_parent"
