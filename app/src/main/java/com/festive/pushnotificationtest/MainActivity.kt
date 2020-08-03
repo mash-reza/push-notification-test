@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,18 +21,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val Gson = GsonBuilder().serializeNulls().create()
+        val gson = GsonBuilder().serializeNulls().create()
+
+        val okHttpClient = OkHttpClient.Builder().addInterceptor(
+            HttpLoggingInterceptor()
+                .setLevel(HttpLoggingInterceptor.Level.BODY)
+        ).build()
+
 
         retrofit = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create(Gson))
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .baseUrl("https://jsonplaceholder.typicode.com/")
+            .client(okHttpClient)
             .build()
 
 //        getPosts()
 //        getComments()
 //        createPost()
-//        updatePost()
-        deletePost()
+        updatePost()
+//        deletePost()
     }
 
     private fun deletePost() {
@@ -48,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updatePost() {
-        retrofit.create(JsonPlaceHolderApi::class.java).patchPost(
+        retrofit.create(JsonPlaceHolderApi::class.java).putPost(
             2, Post(null, 13, null, "dsd")
         ).enqueue(object : Callback<Post> {
             override fun onFailure(call: Call<Post>, t: Throwable) {
