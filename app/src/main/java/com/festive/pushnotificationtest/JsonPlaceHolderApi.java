@@ -14,7 +14,7 @@ public interface JsonPlaceHolderApi {
     Call<List<Post>> getPosts(@QueryMap Map<String, String> params);
 
     @GET("posts/{id}/comments")
-    Call<List<Comment>> getComments(@Path("id") int psotId);
+    Call<List<Comment>> getComments(@Path("id") int postId);
 
     @GET()
     Call<List<Comment>> getComments(@Url String url);
@@ -31,6 +31,15 @@ public interface JsonPlaceHolderApi {
 
     @FormUrlEncoded
     @POST("posts")
-    Call<Post> createPost(@FieldMap Map<String,String> params);
+    Call<Post> createPost(@FieldMap Map<String, String> params);
 
+
+    @PUT("posts/{id}")
+    Call<Post> putPost(@Path("id") int postId, @Body Post post);
+
+    @PATCH("posts/{id}")
+    Call<Post> patchPost(@Path("id") int postId, @Body Post post);
+
+    @DELETE("posts/{id}")
+    Call<Post> deletePost(@Path("id") int postId);
 }

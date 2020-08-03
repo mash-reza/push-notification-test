@@ -2,6 +2,7 @@ package com.festive.pushnotificationtest
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,21 +19,65 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val Gson = GsonBuilder().serializeNulls().create()
+
         retrofit = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(Gson))
             .baseUrl("https://jsonplaceholder.typicode.com/")
             .build()
 
 //        getPosts()
 //        getComments()
-        createPost()
+//        createPost()
+//        updatePost()
+        deletePost()
+    }
+
+    private fun deletePost() {
+        retrofit.create(JsonPlaceHolderApi::class.java).deletePost(
+            2
+        ).enqueue(object : Callback<Post> {
+            override fun onFailure(call: Call<Post>, t: Throwable) {
+                textView.text = t.message
+            }
+
+            override fun onResponse(call: Call<Post>, response: Response<Post>) {
+                textView.text = "status code: ${response.code()}"
+            }
+        })
+    }
+
+    private fun updatePost() {
+        retrofit.create(JsonPlaceHolderApi::class.java).patchPost(
+            2, Post(null, 13, null, "dsd")
+        ).enqueue(object : Callback<Post> {
+            override fun onFailure(call: Call<Post>, t: Throwable) {
+                textView.text = t.message
+            }
+
+            override fun onResponse(call: Call<Post>, response: Response<Post>) {
+                if (!response.isSuccessful) {
+                    textView.text = "error. code:${response.code()}"
+                    return
+                }
+
+                val post = response.body()
+                textView.append(
+                    "code status: ${response.code()}\n" +
+                            "ID: ${post?.id}\n" +
+                            "title: ${post?.title}\n" +
+                            "userId: ${post?.userId}\n" +
+                            "text: ${post?.text}\n\n"
+                )
+            }
+        })
     }
 
     private fun createPost() {
         retrofit.create(JsonPlaceHolderApi::class.java).createPost(
 //            Post(id = null, userId = 4, title = "Reza", text = "I am android developer")
 //        4,"Reza","I am Java Developer"
-        hashMapOf<String,String>(Pair("userId","78"),Pair("title","C Developer"))
+            hashMapOf<String, String>(Pair("userId", "78"), Pair("title", "C Developer"))
         ).enqueue(object : Callback<Post> {
             override fun onFailure(call: Call<Post>, t: Throwable) {
                 textView.text = t.message
