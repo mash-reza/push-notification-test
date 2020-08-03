@@ -34,11 +34,12 @@ public interface JsonPlaceHolderApi {
     Call<Post> createPost(@FieldMap Map<String, String> params);
 
 
+    @Headers({"Role-Header: User", "Test-Header: test"})
     @PUT("posts/{id}")
-    Call<Post> putPost(@Path("id") int postId, @Body Post post);
+    Call<Post> putPost(@Header("Authorization") String token, @Path("id") int postId, @Body Post post);
 
     @PATCH("posts/{id}")
-    Call<Post> patchPost(@Path("id") int postId, @Body Post post);
+    Call<Post> patchPost(@HeaderMap Map<String, String> headers, @Path("id") int postId, @Body Post post);
 
     @DELETE("posts/{id}")
     Call<Post> deletePost(@Path("id") int postId);

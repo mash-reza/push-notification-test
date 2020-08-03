@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -23,10 +24,16 @@ class MainActivity : AppCompatActivity() {
 
         val gson = GsonBuilder().serializeNulls().create()
 
-        val okHttpClient = OkHttpClient.Builder().addInterceptor(
-            HttpLoggingInterceptor()
-                .setLevel(HttpLoggingInterceptor.Level.BODY)
-        ).build()
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(Interceptor {
+                val myRequset = it.request().newBuilder()
+                    .header("Authorization", "Bearer abcdefghigklmnopuvwxyz1234567890").build()
+                return@Interceptor it.proceed(myRequset)
+            })
+            .addInterceptor(
+                HttpLoggingInterceptor()
+                    .setLevel(HttpLoggingInterceptor.Level.BODY)
+            ).build()
 
 
         retrofit = Retrofit.Builder()
@@ -35,10 +42,10 @@ class MainActivity : AppCompatActivity() {
             .client(okHttpClient)
             .build()
 
-//        getPosts()
+        getPosts()
 //        getComments()
 //        createPost()
-        updatePost()
+//        updatePost()
 //        deletePost()
     }
 
@@ -57,8 +64,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updatePost() {
-        retrofit.create(JsonPlaceHolderApi::class.java).putPost(
-            2, Post(null, 13, null, "dsd")
+        retrofit.create(JsonPlaceHolderApi::class.java).patchPost(
+            hashMapOf(Pair("Header-Map-1", "hashmap1"), Pair("Header-Map-2", "hashmap2")),
+            4,
+            Post(null, 13, null, "dsd")
         ).enqueue(object : Callback<Post> {
             override fun onFailure(call: Call<Post>, t: Throwable) {
                 textView.text = t.message
