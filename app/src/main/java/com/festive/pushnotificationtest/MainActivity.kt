@@ -24,12 +24,40 @@ class MainActivity : AppCompatActivity() {
             .build()
 
 //        getPosts()
-        getComments()
+//        getComments()
+        createPost()
     }
 
-    private fun getPosts(){
+    private fun createPost() {
+        retrofit.create(JsonPlaceHolderApi::class.java).createPost(
+//            Post(id = null, userId = 4, title = "Reza", text = "I am android developer")
+//        4,"Reza","I am Java Developer"
+        hashMapOf<String,String>(Pair("userId","78"),Pair("title","C Developer"))
+        ).enqueue(object : Callback<Post> {
+            override fun onFailure(call: Call<Post>, t: Throwable) {
+                textView.text = t.message
+            }
+
+            override fun onResponse(call: Call<Post>, response: Response<Post>) {
+                if (!response.isSuccessful) {
+                    textView.text = "error. code:${response.code()}"
+                    return
+                }
+
+                val post = response.body()
+                textView.append(
+                    "ID: ${post?.id}\n" +
+                            "title: ${post?.title}\n" +
+                            "userId: ${post?.userId}\n" +
+                            "text: ${post?.text}\n\n"
+                )
+            }
+        })
+    }
+
+    private fun getPosts() {
         retrofit.create(JsonPlaceHolderApi::class.java).getPosts(
-            hashMapOf(Pair("userId","2"), Pair("_sort","id"),Pair("_order","desc"))
+            hashMapOf(Pair("userId", "2"), Pair("_sort", "id"), Pair("_order", "desc"))
         ).enqueue(object : Callback<List<Post>> {
             override fun onFailure(call: Call<List<Post>>, t: Throwable) {
                 textView.text = t.message
@@ -54,29 +82,31 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun getComments(){
-        retrofit.create(JsonPlaceHolderApi::class.java).getComments("https://jsonplaceholder.typicode.com/posts/1/comments").enqueue(object : Callback<List<Comment>> {
-            override fun onFailure(call: Call<List<Comment>>, t: Throwable) {
-                textView.text = t.message
-            }
-
-            override fun onResponse(call: Call<List<Comment>>, response: Response<List<Comment>>) {
-                if (!response.isSuccessful) {
-                    textView.text = "error. code:${response.code()}"
-                    return
+    private fun getComments() {
+        retrofit.create(JsonPlaceHolderApi::class.java)
+            .getComments("https://jsonplaceholder.typicode.com/posts/1/comments")
+            .enqueue(object : Callback<List<Comment>> {
+                override fun onFailure(call: Call<List<Comment>>, t: Throwable) {
+                    textView.text = t.message
                 }
 
-                val comments = response.body()
-                for (comment in comments!!.iterator()) {
-                    textView.append(
-                        "ID: ${comment.id}\n" +
-                                "name: ${comment.name}\n" +
-                                "postId: ${comment.postId}\n" +
-                                "email: ${comment.email}\n" +
-                                "text: ${comment.text}\n\n"
-                    )
+                override fun onResponse(call: Call<List<Comment>>, response: Response<List<Comment>>) {
+                    if (!response.isSuccessful) {
+                        textView.text = "error. code:${response.code()}"
+                        return
+                    }
+
+                    val comments = response.body()
+                    for (comment in comments!!.iterator()) {
+                        textView.append(
+                            "ID: ${comment.id}\n" +
+                                    "name: ${comment.name}\n" +
+                                    "postId: ${comment.postId}\n" +
+                                    "email: ${comment.email}\n" +
+                                    "text: ${comment.text}\n\n"
+                        )
+                    }
                 }
-            }
-        })
+            })
     }
 }
